@@ -1,0 +1,29 @@
+name: smart_cv
+services:
+  smart_cv_mongo:
+    image: mongo
+    container_name: smart_cv_mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/mongo:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+    env_file:
+      - .env
+    networks:
+      - resume_builder_network
+
+  smart_cv_redis:
+    image: redis:latest
+    container_name: smart_cv_redis
+    volumes:
+      - ./data/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - 6379:6379
+    networks:
+      - resume_builder_network
+networks:
+  resume_builder_network:
+    driver: bridge
